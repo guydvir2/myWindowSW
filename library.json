@@ -1,0 +1,23 @@
+{
+    "name": "myWindowSW",
+    "version": "0.41",
+    "description": "Windows 3 rocker SW library ESP32/8266",
+    "keywords": "homeController, IOT, Windows",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/guydvir2/myWindowSW"
+    },
+    "authors": [
+        {
+            "name": "guyDvir",
+            "email": "",
+            "url": ""
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/guydvir2/myWindowSW",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
