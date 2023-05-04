@@ -1,4 +1,21 @@
-// #pragma once
+#include <Arduino.h>
+
+#ifndef MAX_TOPIC_SIZE
+#define MAX_TOPIC_SIZE 40
+#endif
+
+#ifndef UNDEF_INPUT
+#define UNDEF_INPUT 255
+#endif
+
+enum state : const uint8_t
+{
+    STATE_OFF,
+    STATE_1,
+    STATE_2,
+    STATE_NOCHG,
+    STATE_ERR
+};
 
 struct Win_act_telem
 {

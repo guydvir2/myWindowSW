@@ -12,27 +12,11 @@ Features:
 #include <Arduino.h>
 #include "defs.h"
 
-#ifndef MAX_TOPIC_SIZE
-#define MAX_TOPIC_SIZE 40
-#endif
-
-#ifndef UNDEF_INPUT
-#define UNDEF_INPUT 255
-#endif
 
 class RockerSW
 {
 #define PRESSED LOW
 #define DEBOUNCE_MS 50
-
-    enum state : const uint8_t
-    {
-        STATE_OFF,
-        STATE_1,
-        STATE_2,
-        STATE_NOCHG,
-        STATE_ERR
-    };
 
 private:
     unsigned long _down_ms[2] = {0, 0};
@@ -67,13 +51,17 @@ private:
     bool _uselockdown = false;
     int _timeout_clk = 0; // seconds to release relay
     unsigned long _timeoutcounter = 0;
+    unsigned long _UP_POSITION = 35000;
+    unsigned long _DOWN_POSITION = 30000;
+    unsigned long _current_postion = 30000;
+
 
 public:
     bool virtCMD = false;
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.41";
+    char ver[14] = "WinSW_v0.5";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
@@ -107,5 +95,7 @@ private:
     void _winDOWN();
     void _timeout_looper();
     void _switch_cb(uint8_t state, uint8_t i);
+
+    void _calc_current_position();
 };
 #endif
