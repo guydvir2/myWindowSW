@@ -52,10 +52,10 @@ private:
     unsigned long _timeoutcounter = 0;
 
     // Precentage calc parameters
-    unsigned float WIN_UP_DURATION = 35.0;   // set by user for each window (seconds)
-    unsigned float WIN_DOWN_DURATION = 30.0; // set by user for each window (seconds)
-    unsigned float _current_postion = 0.0;   // position 0-100
-    unsigned long _motion_clk = 0;           // counts millis of movement
+    float WIN_UP_DURATION = 35.0;   // set by user for each window (seconds)
+    float WIN_DOWN_DURATION = 30.0; // set by user for each window (seconds)
+    float _current_postion = 0.0;   // position 0-100
+    unsigned long _motion_clk = 0;  // counts millis of movement
 
 public:
     bool virtCMD = false;

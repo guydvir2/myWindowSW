@@ -239,7 +239,7 @@ void WinSW::_timeout_looper()
 {
   if (_timeout_clk > 0 && _timeoutcounter > 0)
   {
-    if (millis() - _timeoutcounter > _timeout_clk * 1000)
+    if (millis() - _timeoutcounter > (unsigned long)(_timeout_clk * 1000))
     {
       _switch_cb(STOP, TIMEOUT);
     }
@@ -249,13 +249,20 @@ void WinSW::_calc_current_position()
 {
   unsigned long millis_delta = 0;
   uint8_t state = get_winState();
+
   if (state == DOWN && _current_postion > 0)
   {
     millis_delta = millis() - _motion_clk;
     _current_postion = _current_postion - (float)((millis_delta * 100) / (WIN_DOWN_DURATION));
     _motion_clk = millis();
+    Serial.print("position: ");
+    Serial.print(_current_postion);
+    Serial.print("; millis: ");
+    Serial.println(mills());
     if (_current_postion < 0)
     {
+      Serial.print("before fix: ");
+      Serial.println(_current_postion);
       _current_postion = 0;
     }
   }
@@ -263,8 +270,14 @@ void WinSW::_calc_current_position()
   {
     _current_postion = _current_postion + (float)((millis_delta * 100) / (WIN_UP_DURATION));
     _motion_clk = millis();
+    Serial.print("position: ");
+    Serial.print(_current_postion);
+    Serial.print("; millis: ");
+    Serial.println(mills());
     if (_current_postion > 100)
     {
+      Serial.print("before fix: ");
+      Serial.println(_current_postion);
       _current_postion = 100;
     }
   }

@@ -1,6 +1,6 @@
 {
     "name": "myWindowSW",
-    "version": "0.41",
+    "version": "0.51",
     "description": "Windows 3 rocker SW library ESP32/8266",
     "keywords": "homeController, IOT, Windows",
     "repository": {
