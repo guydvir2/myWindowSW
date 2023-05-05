@@ -8,6 +8,7 @@ bool WinSW::loop()
 {
   _readSW();
   _timeout_looper();
+  _calc_current_position();
   return newMSGflag;
 }
 void WinSW::set_id(uint8_t i)
@@ -172,6 +173,7 @@ void WinSW::_winUP()
   {
     digitalWrite(outpins[0], RELAY_ON);
   }
+  _motion_clk = millis();
 }
 void WinSW::_winDOWN()
 {
@@ -180,6 +182,7 @@ void WinSW::_winDOWN()
   {
     digitalWrite(outpins[1], RELAY_ON);
   }
+  _motion_clk = millis();
 }
 void WinSW::_switch_cb(uint8_t state, uint8_t i)
 {
@@ -239,6 +242,30 @@ void WinSW::_timeout_looper()
     if (millis() - _timeoutcounter > _timeout_clk * 1000)
     {
       _switch_cb(STOP, TIMEOUT);
+    }
+  }
+}
+void WinSW::_calc_current_position()
+{
+  unsigned long millis_delta = 0;
+  uint8_t state = get_winState();
+  if (state == DOWN && _current_postion > 0)
+  {
+    millis_delta = millis() - _motion_clk;
+    _current_postion = _current_postion - (float)((millis_delta * 100) / (WIN_DOWN_DURATION));
+    _motion_clk = millis();
+    if (_current_postion < 0)
+    {
+      _current_postion = 0;
+    }
+  }
+  else if (state == UP && _current_postion < 100)
+  {
+    _current_postion = _current_postion + (float)((millis_delta * 100) / (WIN_UP_DURATION));
+    _motion_clk = millis();
+    if (_current_postion > 100)
+    {
+      _current_postion = 100;
     }
   }
 }

@@ -51,9 +51,10 @@ private:
     bool _uselockdown = false;
     int _timeout_clk = 0; // seconds to release relay
     unsigned long _timeoutcounter = 0;
-    unsigned long _UP_POSITION = 35000;
-    unsigned long _DOWN_POSITION = 30000;
-    unsigned long _current_postion = 30000;
+    unsigned long WIN_UP_DURATION = 35000;
+    unsigned long WIN_DOWN_DURATION = 30000;
+    unsigned float _current_postion = 0.0;
+    unsigned long _motion_clk = 0;
 
 
 public:

@@ -1,13 +1,9 @@
 #include <myWindowSW.h>
 
+#define MAX_WINDOWS 4
 #define numW 1
 
-WinSW *winSW_V[] = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-};
+WinSW *winSW_V[MAX_WINDOWS]{};
 
 void startWindow(uint8_t i)
 {
