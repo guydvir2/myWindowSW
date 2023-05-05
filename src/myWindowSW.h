@@ -12,7 +12,6 @@ Features:
 #include <Arduino.h>
 #include "defs.h"
 
-
 class RockerSW
 {
 #define PRESSED LOW
@@ -51,18 +50,19 @@ private:
     bool _uselockdown = false;
     int _timeout_clk = 0; // seconds to release relay
     unsigned long _timeoutcounter = 0;
-    unsigned long WIN_UP_DURATION = 35000;
-    unsigned long WIN_DOWN_DURATION = 30000;
-    unsigned float _current_postion = 0.0;
-    unsigned long _motion_clk = 0;
 
+    // Precentage calc parameters
+    unsigned float WIN_UP_DURATION = 35.0;   // set by user for each window (seconds)
+    unsigned float WIN_DOWN_DURATION = 30.0; // set by user for each window (seconds)
+    unsigned float _current_postion = 0.0;   // position 0-100
+    unsigned long _motion_clk = 0;           // counts millis of movement
 
 public:
     bool virtCMD = false;
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.5";
+    char ver[14] = "WinSW_v0.51";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
