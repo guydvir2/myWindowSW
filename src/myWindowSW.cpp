@@ -53,6 +53,31 @@ void WinSW::set_WINstate(uint8_t state, uint8_t reason, float position) /* Exter
 {
   _switch_cb(state, reason);
 }
+void WinSW::set_Win_position(float position = UNDEF_POSITION)
+{
+  _validate_position_value();
+  _requested_position = position;
+  _motion_clk = millis();
+
+  if (position > _current_postion)
+  {
+    _winUP();
+    newMSGflag = true;
+    MSG.state = UP;
+    MSG.reason = MQTT;
+  }
+  else if (position < _current_postion)
+  {
+    _winDOWN();
+    newMSGflag = true;
+    MSG.state = DOWN;
+    MSG.reason = MQTT;
+  }
+  else
+  {
+    return;
+  }
+}
 void WinSW::set_extras(bool useLockdown, int timeout_clk)
 {
   _uselockdown = useLockdown;
@@ -293,6 +318,10 @@ void WinSW::_validate_position_value(float &value)
     else if (value < 0)
     {
       value = 0;
+    }
+    else
+    {
+      return;
     }
   }
 }

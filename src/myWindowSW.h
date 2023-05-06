@@ -80,6 +80,7 @@ public:
     void set_name(const char *_name);
     void set_input(uint8_t upin, uint8_t dpin);
     void set_WINstate(uint8_t state, uint8_t reason, float position = UNDEF_POSITION); /* External Callback */
+    void set_Win_position(float position = UNDEF_POSITION);
     void set_ext_input(uint8_t upi = UNDEF_INPUT, uint8_t dpin = UNDEF_INPUT);
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
     void set_extras(bool useLockdown = true, int timeout_clk = 90);
