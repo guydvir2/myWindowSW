@@ -56,7 +56,8 @@ private:
     float WIN_UP_DURATION = 5.0;   // set by user for each window (seconds)
     float WIN_DOWN_DURATION = 7.5; // set by user for each window (seconds)
     float _current_postion = 0.0;   // position 0-100
-    float _requested_position = 0;
+    float _requested_position = 0.0;
+    float _last_position = 0.0;
     unsigned long _motion_clk = 0; // counts millis of movement
 
 public:
@@ -102,7 +103,6 @@ private:
 
     void _calc_current_position();
     void _validate_position_value(float &value);
-    void _set_win_position(float value);
     void _stop_if_position();
 };
 #endif

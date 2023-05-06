@@ -9,6 +9,7 @@ bool WinSW::loop()
   _readSW();
   _timeout_looper();
   _calc_current_position();
+  _stop_if_position();
   return newMSGflag;
 }
 void WinSW::set_id(uint8_t i)
@@ -57,11 +58,16 @@ void WinSW::set_Win_position(float position)
 {
   _validate_position_value(position);
   _requested_position = position;
-  _motion_clk = millis();
+
+  Serial.print("Pos request: ");
+  Serial.println(_requested_position);
+  Serial.print("Curr request: ");
+  Serial.println(_current_postion);
 
   if (position > _current_postion)
   {
     _winUP();
+    _motion_clk = millis();
     newMSGflag = true;
     MSG.state = UP;
     MSG.reason = MQTT;
@@ -69,6 +75,7 @@ void WinSW::set_Win_position(float position)
   else if (position < _current_postion)
   {
     _winDOWN();
+    _motion_clk = millis();
     newMSGflag = true;
     MSG.state = DOWN;
     MSG.reason = MQTT;
@@ -278,31 +285,32 @@ void WinSW::_calc_current_position()
   if (state == DOWN && _current_postion > 0)
   {
     millis_delta = millis() - _motion_clk;
-    _current_postion = _current_postion - (float)((millis_delta * 100) / (WIN_DOWN_DURATION));
+    _current_postion = _current_postion + 100 * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
     _motion_clk = millis();
-    Serial.print("position: ");
-    Serial.print(_current_postion);
-    Serial.print("; millis: ");
-    Serial.println(millis());
+    // Serial.print("position: ");
+    // Serial.print(_current_postion);
+    // Serial.print("; millis: ");
+    // Serial.println(millis());
     if (_current_postion < 0)
     {
-      Serial.print("before fix: ");
-      Serial.println(_current_postion);
+      // Serial.print("before fix: ");
+      // Serial.println(_current_postion);
       _current_postion = 0;
     }
   }
   else if (state == UP && _current_postion < 100)
   {
-    _current_postion = _current_postion + (float)((millis_delta * 100) / (WIN_UP_DURATION));
+    millis_delta = millis() - _motion_clk;
+    _current_postion = _current_postion + 100 * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
     _motion_clk = millis();
-    Serial.print("position: ");
-    Serial.print(_current_postion);
-    Serial.print("; millis: ");
-    Serial.println(millis());
+    // Serial.print("position: ");
+    // Serial.print(_current_postion);
+    // Serial.print("; millis: ");
+    // Serial.println(millis());
     if (_current_postion > 100)
     {
-      Serial.print("before fix: ");
-      Serial.println(_current_postion);
+      // Serial.print("before fix: ");
+      // Serial.println(_current_postion);
       _current_postion = 100;
     }
   }
@@ -325,6 +333,26 @@ void WinSW::_validate_position_value(float &value)
     }
   }
 }
+
+void WinSW::_stop_if_position()
+{
+  if (_seek_position)
+  {
+    if (abs(_last_position - _requested_position) < abs(_current_postion - _last_position))
+    {
+      _allOff();
+      _seek_position = false;
+      Serial.print("Reached Pos: ");
+      Serial.println(_current_postion);
+    }
+    else
+    {
+      _last_position = _current_postion;
+      Serial.println(_current_postion);
+    }
+  }
+}
+
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 RockerSW::RockerSW()
