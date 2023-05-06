@@ -53,9 +53,9 @@ void WinSW::set_WINstate(uint8_t state, uint8_t reason, float position) /* Exter
 {
   _switch_cb(state, reason);
 }
-void WinSW::set_Win_position(float position = UNDEF_POSITION)
+void WinSW::set_Win_position(float position)
 {
-  _validate_position_value();
+  _validate_position_value(position);
   _requested_position = position;
   _motion_clk = millis();
 
