@@ -8,6 +8,8 @@
 #define UNDEF_INPUT 255
 #endif
 
+#define UNDEF_POSITION 211.1
+
 enum state : const uint8_t
 {
     STATE_OFF,

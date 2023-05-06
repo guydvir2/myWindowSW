@@ -49,7 +49,7 @@ void WinSW::set_ext_input(uint8_t upin, uint8_t dpin)
     _extSW.get_SWstate(); // <--- To read init state at boot, and ignore switch state //
   }
 }
-void WinSW::set_WINstate(uint8_t state, uint8_t reason) /* External Callback */
+void WinSW::set_WINstate(uint8_t state, uint8_t reason, float position) /* External Callback */
 {
   _switch_cb(state, reason);
 }
@@ -184,7 +184,7 @@ void WinSW::_winDOWN()
   }
   _motion_clk = millis();
 }
-void WinSW::_switch_cb(uint8_t state, uint8_t i)
+void WinSW::_switch_cb(uint8_t state, uint8_t i, float position)
 {
   if (((_uselockdown && _lockdownState == false) || _uselockdown == false) && (state != get_winState() || virtCMD == true))
   {
@@ -258,7 +258,7 @@ void WinSW::_calc_current_position()
     Serial.print("position: ");
     Serial.print(_current_postion);
     Serial.print("; millis: ");
-    Serial.println(mills());
+    Serial.println(millis());
     if (_current_postion < 0)
     {
       Serial.print("before fix: ");
@@ -273,7 +273,7 @@ void WinSW::_calc_current_position()
     Serial.print("position: ");
     Serial.print(_current_postion);
     Serial.print("; millis: ");
-    Serial.println(mills());
+    Serial.println(millis());
     if (_current_postion > 100)
     {
       Serial.print("before fix: ");
@@ -282,7 +282,20 @@ void WinSW::_calc_current_position()
     }
   }
 }
-
+void WinSW::_validate_position_value(float &value)
+{
+  if (value != UNDEF_POSITION)
+  {
+    if (value > 100)
+    {
+      value = 100;
+    }
+    else if (value < 0)
+    {
+      value = 0;
+    }
+  }
+}
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 RockerSW::RockerSW()
