@@ -68,6 +68,7 @@ void WinSW::set_Win_position(float position)
   {
     _winUP();
     _motion_clk = millis();
+    _seek_position=true;
     newMSGflag = true;
     MSG.state = UP;
     MSG.reason = MQTT;
@@ -76,6 +77,7 @@ void WinSW::set_Win_position(float position)
   {
     _winDOWN();
     _motion_clk = millis();
+    _seek_position=true;
     newMSGflag = true;
     MSG.state = DOWN;
     MSG.reason = MQTT;
@@ -205,7 +207,7 @@ void WinSW::_winUP()
   {
     digitalWrite(outpins[0], RELAY_ON);
   }
-  _motion_clk = millis();
+  // _motion_clk = millis();
 }
 void WinSW::_winDOWN()
 {
@@ -214,7 +216,7 @@ void WinSW::_winDOWN()
   {
     digitalWrite(outpins[1], RELAY_ON);
   }
-  _motion_clk = millis();
+  // _motion_clk = millis();
 }
 void WinSW::_switch_cb(uint8_t state, uint8_t i, float position)
 {
@@ -285,16 +287,16 @@ void WinSW::_calc_current_position()
   if (state == DOWN && _current_postion > 0)
   {
     millis_delta = millis() - _motion_clk;
-    _current_postion = _current_postion + 100 * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
+    _current_postion = _current_postion - 100 * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
     _motion_clk = millis();
-    // Serial.print("position: ");
+    // Serial.print("d_position: ");
     // Serial.print(_current_postion);
     // Serial.print("; millis: ");
     // Serial.println(millis());
     if (_current_postion < 0)
     {
-      // Serial.print("before fix: ");
-      // Serial.println(_current_postion);
+      Serial.print("before fix: ");
+      Serial.println(_current_postion);
       _current_postion = 0;
     }
   }
@@ -303,14 +305,14 @@ void WinSW::_calc_current_position()
     millis_delta = millis() - _motion_clk;
     _current_postion = _current_postion + 100 * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
     _motion_clk = millis();
-    // Serial.print("position: ");
+    // Serial.print("u_position: ");
     // Serial.print(_current_postion);
     // Serial.print("; millis: ");
     // Serial.println(millis());
     if (_current_postion > 100)
     {
-      // Serial.print("before fix: ");
-      // Serial.println(_current_postion);
+      Serial.print("before fix: ");
+      Serial.println(_current_postion);
       _current_postion = 100;
     }
   }
