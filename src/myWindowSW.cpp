@@ -89,7 +89,7 @@ void WinSW::set_Win_position(float position)
     return;
   }
 }
-void WinSW::set_extras(bool useLockdown, /*int timeout_clk*/)
+void WinSW::set_extras(bool useLockdown/*,int timeout_clk*/)
 {
   _uselockdown = useLockdown;
   // _timeout_clk = timeout_clk;
@@ -248,33 +248,33 @@ void WinSW::_switch_cb(uint8_t state, uint8_t i, float position)
       MSG.reason = i;
     }
 
-  //   if (state == STOP)
-  //   {
-  //     _allOff();
-  //     newMSGflag = true;
-  //     // _timeoutcounter = 0;
-  //   }
-  //   else if (state == UP)
-  //   {
-  //     _winUP();
-  //     newMSGflag = true;
-  //     // _timeoutcounter = millis();
-  //   }
-  //   else if (state == DOWN)
-  //   {
-  //     _winDOWN();
-  //     newMSGflag = true;
-  //     // _timeoutcounter = millis();
-  //   }
-  //   else
-  //   {
-  //     MSG.state = ERR;
-  //     MSG.reason = i;
-  //     return;
-  //   }
-  //   MSG.state = state;
-  //   MSG.reason = i;
-  // }
+    //   if (state == STOP)
+    //   {
+    //     _allOff();
+    //     newMSGflag = true;
+    //     // _timeoutcounter = 0;
+    //   }
+    //   else if (state == UP)
+    //   {
+    //     _winUP();
+    //     newMSGflag = true;
+    //     // _timeoutcounter = millis();
+    //   }
+    //   else if (state == DOWN)
+    //   {
+    //     _winDOWN();
+    //     newMSGflag = true;
+    //     // _timeoutcounter = millis();
+    //   }
+    //   else
+    //   {
+    //     MSG.state = ERR;
+    //     MSG.reason = i;
+    //     return;
+    //   }
+    //   MSG.state = state;
+    //   MSG.reason = i;
+  }
 }
 void WinSW::_readSW()
 {
