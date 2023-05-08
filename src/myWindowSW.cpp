@@ -7,7 +7,7 @@ WinSW::WinSW()
 bool WinSW::loop()
 {
   _readSW();
-  _timeout_looper();
+  // _timeout_looper();
   _calc_current_position();
   _stop_if_position();
   return newMSGflag;
@@ -50,7 +50,7 @@ void WinSW::set_ext_input(uint8_t upin, uint8_t dpin)
     _extSW.get_SWstate(); // <--- To read init state at boot, and ignore switch state //
   }
 }
-void WinSW::set_WINstate(uint8_t state, uint8_t reason, float position) /* External Callback */
+void WinSW::set_WINstate(uint8_t state, uint8_t reason) /* External Callback */
 {
   _switch_cb(state, reason);
 }
@@ -89,10 +89,10 @@ void WinSW::set_Win_position(float position)
     return;
   }
 }
-void WinSW::set_extras(bool useLockdown, int timeout_clk)
+void WinSW::set_extras(bool useLockdown, /*int timeout_clk*/)
 {
   _uselockdown = useLockdown;
-  _timeout_clk = timeout_clk;
+  // _timeout_clk = timeout_clk;
 }
 
 void WinSW::init_lockdown()
@@ -138,8 +138,8 @@ void WinSW::print_preferences()
   Serial.print(F("; "));
   Serial.println(_extSW.get_pins(1));
 
-  Serial.print(F("use timeout:\t"));
-  Serial.println(_timeout_clk);
+  // Serial.print(F("use timeout:\t"));
+  // Serial.println(_timeout_clk);
 
   Serial.print(F("use lockdown:\t"));
   Serial.println(_uselockdown ? "YES" : "NO");
@@ -226,19 +226,19 @@ void WinSW::_switch_cb(uint8_t state, uint8_t i, float position)
     {
       _allOff();
       newMSGflag = true;
-      _timeoutcounter = 0;
+      // _timeoutcounter = 0;
     }
     else if (state == UP)
     {
       _winUP();
       newMSGflag = true;
-      _timeoutcounter = millis();
+      // _timeoutcounter = millis();
     }
     else if (state == DOWN)
     {
       _winDOWN();
       newMSGflag = true;
-      _timeoutcounter = millis();
+      // _timeoutcounter = millis();
     }
     else
     {
@@ -269,16 +269,16 @@ void WinSW::_readSW()
     }
   }
 }
-void WinSW::_timeout_looper()
-{
-  if (_timeout_clk > 0 && _timeoutcounter > 0)
-  {
-    if (millis() - _timeoutcounter > (unsigned long)(_timeout_clk * 1000))
-    {
-      _switch_cb(STOP, TIMEOUT);
-    }
-  }
-}
+// void WinSW::_timeout_looper()
+// {
+//   if (_timeout_clk > 0 && _timeoutcounter > 0)
+//   {
+//     if (millis() - _timeoutcounter > (unsigned long)(_timeout_clk * 1000))
+//     {
+//       _switch_cb(STOP, TIMEOUT);
+//     }
+//   }
+// }
 void WinSW::_calc_current_position()
 {
   unsigned long millis_delta = 0;
