@@ -53,12 +53,14 @@ private:
     unsigned long _timeoutcounter = 0;
 
     // Precentage calc parameters
-    float WIN_UP_DURATION = 5.0;   // set by user for each window (seconds)
-    float WIN_DOWN_DURATION = 7.5; // set by user for each window (seconds)
-    float _current_postion = 0.0;   // position 0-100
-    float _requested_position = 0.0;
-    float _last_position = 0.0;
-    unsigned long _motion_clk = 0; // counts millis of movement
+    float WIN_UP_DURATION = 5.0;              // set by user for each window (seconds)
+    float WIN_DOWN_DURATION = 7.5;            // set by user for each window (seconds)
+    float _current_postion = 0.0;             // position 0-100
+    float _requested_position = 0.0;          // cmd to position
+    float _last_position = 0.0;               // last saved position
+    float _motor_stall_sec = 0.5;             // time untill motor actually moves (for now same up & down)
+    float _end_movement_extra_time_sec = 0.5; // give extra time to make sure when it come to 0 or 100
+    unsigned long _motion_clk = 0;            // counts millis of movement
 
 public:
     bool virtCMD = false;
@@ -99,7 +101,7 @@ private:
     void _readSW();
     void _winDOWN();
     void _timeout_looper();
-    void _switch_cb(uint8_t state, uint8_t i,float position = UNDEF_POSITION);
+    void _switch_cb(uint8_t state, uint8_t i, float position = UNDEF_POSITION);
 
     void _calc_current_position();
     void _validate_position_value(float &value);
