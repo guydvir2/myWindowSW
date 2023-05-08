@@ -222,33 +222,59 @@ void WinSW::_switch_cb(uint8_t state, uint8_t i, float position)
 {
   if (((_uselockdown && _lockdownState == false) || _uselockdown == false) && (state != get_winState() || virtCMD == true))
   {
-    if (state == STOP)
+    if (state != ERR)
     {
-      _allOff();
+      switch (state)
+      {
+      case UP:
+        _winUP();
+        break;
+      case DOWN:
+        _winDOWN();
+        break;
+      case STOP:
+        _allOff();
+        break;
+      default:
+        break;
+      }
       newMSGflag = true;
-      // _timeoutcounter = 0;
-    }
-    else if (state == UP)
-    {
-      _winUP();
-      newMSGflag = true;
-      // _timeoutcounter = millis();
-    }
-    else if (state == DOWN)
-    {
-      _winDOWN();
-      newMSGflag = true;
-      // _timeoutcounter = millis();
+      MSG.state = state;
+      MSG.reason = i;
     }
     else
     {
       MSG.state = ERR;
       MSG.reason = i;
-      return;
     }
-    MSG.state = state;
-    MSG.reason = i;
-  }
+
+  //   if (state == STOP)
+  //   {
+  //     _allOff();
+  //     newMSGflag = true;
+  //     // _timeoutcounter = 0;
+  //   }
+  //   else if (state == UP)
+  //   {
+  //     _winUP();
+  //     newMSGflag = true;
+  //     // _timeoutcounter = millis();
+  //   }
+  //   else if (state == DOWN)
+  //   {
+  //     _winDOWN();
+  //     newMSGflag = true;
+  //     // _timeoutcounter = millis();
+  //   }
+  //   else
+  //   {
+  //     MSG.state = ERR;
+  //     MSG.reason = i;
+  //     return;
+  //   }
+  //   MSG.state = state;
+  //   MSG.reason = i;
+  // }
 }
 void WinSW::_readSW()
 {
