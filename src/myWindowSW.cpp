@@ -89,10 +89,9 @@ void WinSW::set_Win_position(float position)
     return;
   }
 }
-void WinSW::set_extras(bool useLockdown/*,int timeout_clk*/)
+void WinSW::set_extras(bool useLockdown)
 {
   _uselockdown = useLockdown;
-  // _timeout_clk = timeout_clk;
 }
 
 void WinSW::init_lockdown()
