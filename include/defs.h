@@ -9,6 +9,8 @@
 #endif
 
 #define UNDEF_POSITION 211.1
+#define MAX_OPEN_POSITION 100
+#define MIN_OPEN_POSITION 0
 
 enum state : const uint8_t
 {
@@ -23,6 +25,7 @@ struct Win_act_telem
 {
     uint8_t state = 255;  /* Up/Down/ Off */
     uint8_t reason = 255; /* What triggered the button */
+    float position = 0;   /* Windows position on a scal 0-100 */
     bool lockdown_state = false;
 };
 struct Win_props

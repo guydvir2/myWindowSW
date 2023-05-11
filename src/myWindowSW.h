@@ -40,17 +40,14 @@ class WinSW
 {
 #define RELAY_ON HIGH
 private:
-    RockerSW _mainSW;
-    RockerSW _extSW;
+    RockerSW *RockerSW_V[2]{};
 
     uint8_t _id = 0;
     static uint8_t _next_id; /* Instance counter */
     bool _uselockdown = false;
     bool _lockdownState = false;
     bool _seek_position = false;
-
-    int _timeout_clk = 0; // seconds to release relay
-    // unsigned long _timeoutcounter = 0;
+    bool _use_position = false;
 
     // Precentage calc parameters
     float WIN_UP_DURATION = 5.0;              // set by user for each window (seconds)
@@ -67,7 +64,7 @@ public:
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.53";
+    char ver[14] = "WinSW_v0.54";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
@@ -76,20 +73,25 @@ public:
 public:
     WinSW();
     bool loop();
+
     void init_lockdown();
     void release_lockdown();
 
     void set_id(uint8_t i);
     void set_name(const char *_name);
     void set_input(uint8_t upin, uint8_t dpin);
-    void set_WINstate(uint8_t state, uint8_t reason); /* External Callback */
-    void set_Win_position(float position);
+    void set_extras(bool useLockdown = true, bool usePosition = true);
     void set_ext_input(uint8_t upi = UNDEF_INPUT, uint8_t dpin = UNDEF_INPUT);
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
-    void set_extras(bool useLockdown = true/*, int timeout_clk = 90*/);
+
+    void set_Win_position(float position); /* Set Open Position 0-100*/
+    void set_movement_durations(float up, float down = 100);
+
+    void set_WINstate(uint8_t state, uint8_t reason); /* External Callback UP/DOWN/OFF */
 
     uint8_t get_id();
     uint8_t get_winState();
+    float get_Win_position();
 
     void clear_newMSG();
     void get_Win_props(Win_props &win_props);
@@ -100,9 +102,10 @@ private:
     void _allOff();
     void _readSW();
     void _winDOWN();
-    // void _timeout_looper();
-    void _switch_cb(uint8_t state, uint8_t i, float position = UNDEF_POSITION);
+    void _switch_window_state(uint8_t state, uint8_t i);
 
+    void _start_timing_movement();
+    void _end_timing_movement();
     void _calc_current_position();
     void _validate_position_value(float &value);
     void _stop_if_position();
