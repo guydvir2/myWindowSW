@@ -54,9 +54,10 @@ private:
     float _current_postion = 0.0;             // position 0-100
     float _requested_position = 0.0;          // cmd to position
     float _last_position = 0.0;               // last saved position
-    float _motor_stall_sec = 0.5;             // time untill motor actually moves (for now same up & down)
-    float _end_movement_extra_time_sec = 0.5; // give extra time to make sure when it come to 0 or 100
-    unsigned long _motion_clk = 0;            // counts millis of movement
+    float _motor_stall_sec = 0.0;             // time untill motor actually moves (for now same up & down)
+    float _end_movement_extra_time_sec = 0.0; // give extra time to make sure when it come to 0 or 100
+    float _start_position = 0;
+    unsigned long _start_clk = 0;
 
 public:
     bool virtCMD = false;
