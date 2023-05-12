@@ -45,17 +45,17 @@ void WinSW::set_ext_input(uint8_t upin, uint8_t dpin)
 {
   if (upin != UNDEF_INPUT && dpin != UNDEF_INPUT)
   {
-    RockerSW_V[1] = new RockerSW;
     useExtSW = true;
+    RockerSW_V[1] = new RockerSW;
     RockerSW_V[1]->set_input(upin, dpin);
     RockerSW_V[1]->get_SWstate(); // <--- To read init state at boot, and ignore switch state //
   }
 }
-void WinSW::set_WINstate(uint8_t state, uint8_t reason) /* External Callback */
+void WinSW::set_WINstate(uint8_t state, uint8_t reason) /* set windows state: up/ down/ off */
 {
   _switch_window_state(state, reason);
 }
-void WinSW::set_Win_position(float position)
+void WinSW::set_Win_position(float position) /* set open value 0-100 */
 {
   _validate_position_value(position);
   _requested_position = position;
@@ -86,14 +86,16 @@ void WinSW::set_Win_position(float position)
     return;
   }
 }
-void WinSW::set_movement_durations(float up, float down)
-{
-  WIN_UP_DURATION = up;
-  WIN_DOWN_DURATION = down;
-}
 void WinSW::set_extras(bool useLockdown)
 {
   _uselockdown = useLockdown;
+}
+void WinSW::set_motor_properties(float to_to_up, float time_to_down, float stick_time, float end_move_time)
+{
+  WIN_UP_DURATION = to_to_up;
+  WIN_DOWN_DURATION = time_to_down;
+  _motor_stall_sec = stick_time;
+  _end_movement_extra_time_sec = end_move_time;
 }
 
 void WinSW::init_lockdown()
@@ -205,9 +207,12 @@ void WinSW::_allOff()
     digitalWrite(outpins[1], !RELAY_ON);
     _motor_rotating = false;
     MSG.state = STOP;
-    _end_timing_movement();
     delay(10); // for safety
   }
+  Serial.print("end_pos: ");
+  Serial.println(_current_postion);
+  Serial.print("delta_time: ");
+  Serial.println(millis() - _start_clk);
 }
 void WinSW::_winUP()
 {
@@ -247,7 +252,6 @@ void WinSW::_switch_window_state(uint8_t state, uint8_t i)
         break;
       case STOP:
         _allOff();
-        // _end_timing_movement();
         break;
       default:
         break;
@@ -295,7 +299,7 @@ void WinSW::_calc_current_position()
     }
     else if (state == UP && _current_postion < MAX_OPEN_POSITION)
     {
-      _current_postion = _start_position + (MAX_OPEN_POSITION * millis_delta * 0.001) / (WIN_DOWN_DURATION);
+      _current_postion = _start_position + (MAX_OPEN_POSITION * millis_delta * 0.001) / (WIN_UP_DURATION);
       MSG.position = _current_postion;
     }
     else
@@ -333,13 +337,17 @@ void WinSW::_stop_if_position()
       {
         delay(_end_movement_extra_time_sec * 1000);
       }
-      Serial.print("Position Reached: ");
+      Serial.print("Reached requested position: ");
       Serial.println(_current_postion);
-      if (abs(_current_postion - _requested_position) < 1)
+      if (abs(_current_postion - _requested_position) < 0.5 && abs(_current_postion - _requested_position) > 0.01)
       {
-        Serial.print("Position err: ");
+        Serial.print("Position err correction: ");
         Serial.println(abs(_current_postion - _requested_position));
         _current_postion = _requested_position;
+      }
+      else
+      {
+        Serial.println("Position err to big");
       }
     }
     _last_position = _current_postion;
@@ -347,15 +355,9 @@ void WinSW::_stop_if_position()
 }
 void WinSW::_start_timing_movement()
 {
-  delay(_motor_stall_sec * 1000); // <--- give slac to motor movement
+  delay(_motor_stall_sec * 1000); // <--- motor stick extra time
   _start_clk = millis();
   _start_position = _current_postion;
-  // _seek_position = true;
-}
-void WinSW::_end_timing_movement()
-{
-  _motion_clk = 0;
-  // _seek_position = false;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

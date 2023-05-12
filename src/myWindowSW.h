@@ -64,7 +64,7 @@ public:
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.55";
+    char ver[14] = "WinSW_v0.56";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
@@ -85,13 +85,13 @@ public:
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
 
     void set_Win_position(float position); /* Set Open Position 0-100*/
-    void set_movement_durations(float up, float down = 100);
+    void set_motor_properties(float to_to_up=100, float time_to_down=100, float stick_time=0.5, float end_move_time = 0.5);
 
     void set_WINstate(uint8_t state, uint8_t reason); /* External Callback UP/DOWN/OFF */
 
     uint8_t get_id();
-    uint8_t get_winState();
-    float get_Win_position();
+    uint8_t get_winState(); /* off, up, down */
+    float get_Win_position(); /* value 0-100 */
 
     void clear_newMSG();
     void get_Win_props(Win_props &win_props);
@@ -104,10 +104,9 @@ private:
     void _winDOWN();
     void _switch_window_state(uint8_t state, uint8_t i);
 
+    void _stop_if_position();
     void _start_timing_movement();
-    void _end_timing_movement();
     void _calc_current_position();
     void _validate_position_value(float &value);
-    void _stop_if_position();
 };
 #endif
