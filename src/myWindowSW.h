@@ -46,8 +46,7 @@ private:
     static uint8_t _next_id; /* Instance counter */
     bool _uselockdown = false;
     bool _lockdownState = false;
-    bool _seek_position = false;
-    bool _use_position = false;
+    bool _motor_rotating = false;
 
     // Precentage calc parameters
     float WIN_UP_DURATION = 5.0;              // set by user for each window (seconds)
@@ -64,7 +63,7 @@ public:
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.54";
+    char ver[14] = "WinSW_v0.55";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
@@ -80,7 +79,7 @@ public:
     void set_id(uint8_t i);
     void set_name(const char *_name);
     void set_input(uint8_t upin, uint8_t dpin);
-    void set_extras(bool useLockdown = true, bool usePosition = true);
+    void set_extras(bool useLockdown = true);
     void set_ext_input(uint8_t upi = UNDEF_INPUT, uint8_t dpin = UNDEF_INPUT);
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
 
