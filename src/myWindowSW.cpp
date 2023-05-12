@@ -205,6 +205,8 @@ void WinSW::_allOff()
     digitalWrite(outpins[1], !RELAY_ON);
     _motor_rotating = false;
     MSG.state = STOP;
+    Serial.print("Off: ");
+    Serial.println(millis());
     _end_timing_movement();
     delay(10);
   }
@@ -218,6 +220,8 @@ void WinSW::_winUP()
     _motor_rotating = true;
     _start_timing_movement();
     MSG.state = UP;
+    Serial.print("Start_UP: ");
+    Serial.println(millis());
   }
 }
 void WinSW::_winDOWN()
@@ -228,6 +232,8 @@ void WinSW::_winDOWN()
     digitalWrite(outpins[1], RELAY_ON);
     _motor_rotating = true;
     _start_timing_movement();
+    Serial.print("Start_DOWN: ");
+    Serial.println(millis());
     MSG.state = DOWN;
   }
 }
@@ -290,7 +296,7 @@ void WinSW::_calc_current_position()
 
     if (state == DOWN && _current_postion > MIN_OPEN_POSITION)
     {
-      _current_postion = _current_postion - MAX_OPEN_POSITION * (float)((millis_delta * 0.001) / (WIN_UP_DURATION));
+      _current_postion = _current_postion - MAX_OPEN_POSITION * (float)((millis_delta * 0.001) / (WIN_DOWN_DURATION));
       MSG.position = _current_postion;
       _motion_clk = millis();
     }
@@ -344,7 +350,7 @@ void WinSW::_stop_if_position()
     }
     // else
     // {
-      _last_position = _current_postion;
+    _last_position = _current_postion;
     // }
   }
 }
