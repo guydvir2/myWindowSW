@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 #ifndef MAX_TOPIC_SIZE
 #define MAX_TOPIC_SIZE 40
 #endif
@@ -8,7 +6,7 @@
 #define UNDEF_INPUT 255
 #endif
 
-#define UNDEF_POSITION 211.1
+#define UNDEF_POSITION 211
 #define MAX_OPEN_POSITION 100
 #define MIN_OPEN_POSITION 0
 

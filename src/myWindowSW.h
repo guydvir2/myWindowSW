@@ -10,8 +10,7 @@ Features:
 #define mywindowsw_h
 
 #include <Arduino.h>
-#include "defs.h"
-
+#include "myW.h"
 class RockerSW
 {
 #define PRESSED LOW
