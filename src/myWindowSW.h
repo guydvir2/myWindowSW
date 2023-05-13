@@ -49,8 +49,8 @@ private:
     bool _motor_rotating = false;
 
     // Precentage calc parameters
-    float WIN_UP_DURATION = 5.0;              // set by user for each window (seconds)
-    float WIN_DOWN_DURATION = 7.5;            // set by user for each window (seconds)
+    float WIN_UP_DURATION = 90.0;              // set by user for each window (seconds)
+    float WIN_DOWN_DURATION = 90.0;            // set by user for each window (seconds)
     float _current_postion = 0.0;             // position 0-100
     float _requested_position = 0.0;          // cmd to position
     float _last_position = 0.0;               // last saved position
