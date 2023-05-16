@@ -137,11 +137,16 @@ void WinSW::print_preferences()
   Serial.print(F("; "));
   Serial.println(outpins[1]);
 
-  Serial.print(F("ext_pins #:\t"));
-  Serial.print(RockerSW_V[1]->get_pins(0));
+  Serial.print(F("extra_input :\t"));
+  Serial.print(useExtSW ? "Yes" : "No");
+  if (useExtSW)
+  {
+    Serial.print(F("ext_pins #:\t"));
+    Serial.print(RockerSW_V[1]->get_pins(0));
 
-  Serial.print(F("; "));
-  Serial.println(RockerSW_V[1]->get_pins(1));
+    Serial.print(F("; "));
+    Serial.println(RockerSW_V[1]->get_pins(1));
+  }
 
   Serial.print(F("use lockdown:\t"));
   Serial.println(_uselockdown ? "YES" : "NO");

@@ -63,7 +63,7 @@ public:
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.56";
+    char ver[14] = "WinSW_v0.57";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
