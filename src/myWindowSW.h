@@ -48,8 +48,8 @@ private:
     bool _motor_rotating = false;
 
     // Precentage calc parameters
-    float WIN_UP_DURATION = 90.0;              // set by user for each window (seconds)
-    float WIN_DOWN_DURATION = 90.0;            // set by user for each window (seconds)
+    float WIN_UP_DURATION = 90.0;             // set by user for each window (seconds)
+    float WIN_DOWN_DURATION = 90.0;           // set by user for each window (seconds)
     float _current_postion = 0.0;             // position 0-100
     float _requested_position = 0.0;          // cmd to position
     float _last_position = 0.0;               // last saved position
@@ -60,17 +60,18 @@ private:
 
 public:
     bool virtCMD = false;
+    bool useDebug = false;
     bool useExtSW = false;
     bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.57";
+    char ver[14] = "WinSW_v0.57a";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
     Win_act_telem MSG;
 
 public:
-    WinSW();
+    WinSW(bool use_debug = false);
     bool loop();
 
     void init_lockdown();
@@ -84,12 +85,12 @@ public:
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
 
     void set_Win_position(float position); /* Set Open Position 0-100*/
-    void set_motor_properties(float to_to_up=100, float time_to_down=100, float stick_time=0.5, float end_move_time = 0.5);
+    void set_motor_properties(float to_to_up = 100, float time_to_down = 100, float stick_time = 0.5, float end_move_time = 0.5);
 
     void set_WINstate(uint8_t state, uint8_t reason); /* External Callback UP/DOWN/OFF */
 
     uint8_t get_id();
-    uint8_t get_winState(); /* off, up, down */
+    uint8_t get_winState();   /* off, up, down */
     float get_Win_position(); /* value 0-100 */
 
     void clear_newMSG();

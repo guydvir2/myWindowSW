@@ -1,8 +1,9 @@
 #include "myWindowSW.h"
 
-WinSW::WinSW()
+WinSW::WinSW(bool use_debug)
 {
   _id = _next_id++;
+  useDebug = use_debug;
   RockerSW_V[0] = new RockerSW;
 }
 bool WinSW::loop()
@@ -117,41 +118,44 @@ void WinSW::release_lockdown()
 }
 void WinSW::print_preferences()
 {
-  Serial.print(F("\n >>>>>> Window #"));
-  Serial.print(_id);
-  Serial.println(F(" <<<<<< "));
-
-  Serial.print(F("Output :\t"));
-  Serial.println(virtCMD ? "Virutal" : "Relay");
-
-  Serial.print(F("MQTT:\t"));
-  Serial.println(name);
-
-  Serial.print(F("in_pins #:\t"));
-  Serial.print(RockerSW_V[0]->get_pins(0));
-  Serial.print(F("; "));
-  Serial.println(RockerSW_V[0]->get_pins(1));
-
-  Serial.print(F("out_pins #:\t"));
-  Serial.print(outpins[0]);
-  Serial.print(F("; "));
-  Serial.println(outpins[1]);
-
-  Serial.print(F("extra_input :\t"));
-  Serial.print(useExtSW ? "Yes" : "No");
-  if (useExtSW)
+  if (useDebug)
   {
-    Serial.print(F("ext_pins #:\t"));
-    Serial.print(RockerSW_V[1]->get_pins(0));
+    Serial.print(F("\n >>>>>> Window #"));
+    Serial.print(_id);
+    Serial.println(F(" <<<<<< "));
 
+    Serial.print(F("Output :\t"));
+    Serial.println(virtCMD ? "Virutal" : "Relay");
+
+    Serial.print(F("MQTT:\t"));
+    Serial.println(name);
+
+    Serial.print(F("in_pins #:\t"));
+    Serial.print(RockerSW_V[0]->get_pins(0));
     Serial.print(F("; "));
-    Serial.println(RockerSW_V[1]->get_pins(1));
+    Serial.println(RockerSW_V[0]->get_pins(1));
+
+    Serial.print(F("out_pins #:\t"));
+    Serial.print(outpins[0]);
+    Serial.print(F("; "));
+    Serial.println(outpins[1]);
+
+    Serial.print(F("extra_input :\t"));
+    Serial.println(useExtSW ? "Yes" : "No");
+    if (useExtSW)
+    {
+      Serial.print(F("ext_pins #:\t"));
+      Serial.print(RockerSW_V[1]->get_pins(0));
+
+      Serial.print(F("; "));
+      Serial.println(RockerSW_V[1]->get_pins(1));
+    }
+
+    Serial.print(F("use lockdown:\t"));
+    Serial.println(_uselockdown ? "YES" : "NO");
+
+    Serial.println(F(" >>>>>>>> END <<<<<<<< \n"));
   }
-
-  Serial.print(F("use lockdown:\t"));
-  Serial.println(_uselockdown ? "YES" : "NO");
-
-  Serial.println(F(" >>>>>>>> END <<<<<<<< \n"));
 }
 void WinSW::clear_newMSG()
 {
