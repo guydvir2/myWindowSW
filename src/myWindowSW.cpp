@@ -11,7 +11,7 @@ bool WinSW::loop()
   _readSW();
   _calc_current_position();
   _stop_if_position();
-  return newMSGflag;
+  return MSG.newMSG;
 }
 void WinSW::set_id(uint8_t i)
 {
@@ -71,7 +71,7 @@ void WinSW::set_Win_position(float position) /* set open value 0-100 */
     _winUP();
     _start_timing_movement();
 
-    newMSGflag = true;
+    MSG.newMSG = true;
     MSG.reason = MQTT;
   }
   else if (position < _current_postion)
@@ -79,7 +79,7 @@ void WinSW::set_Win_position(float position) /* set open value 0-100 */
     _winDOWN();
     _start_timing_movement();
 
-    newMSGflag = true;
+    MSG.newMSG = true;
     MSG.reason = MQTT;
   }
   else
@@ -159,7 +159,7 @@ void WinSW::print_preferences()
 }
 void WinSW::clear_newMSG()
 {
-  newMSGflag = false;
+  MSG.newMSG = false;
 }
 uint8_t WinSW::get_id()
 {
@@ -206,6 +206,7 @@ void WinSW::get_Win_props(Win_props &win_props)
   win_props.inpins2[0] = useExtSW ? RockerSW_V[1]->get_pins(0) : 255;
   win_props.inpins2[1] = useExtSW ? RockerSW_V[1]->get_pins(1) : 255;
 }
+
 uint8_t WinSW::_next_id = 0;
 
 void WinSW::_allOff()
@@ -265,7 +266,7 @@ void WinSW::_switch_window_state(uint8_t state, uint8_t i)
       default:
         break;
       }
-      newMSGflag = true;
+      MSG.newMSG = true;
       MSG.reason = i;
     }
     else

@@ -25,6 +25,7 @@ struct Win_act_telem
     uint8_t reason = 255; /* What triggered the button */
     float position = 0;   /* Windows position on a scal 0-100 */
     bool lockdown_state = false;
+    bool newMSG = false;
 };
 struct Win_props
 {

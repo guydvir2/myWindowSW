@@ -62,9 +62,8 @@ public:
     bool virtCMD = false;
     bool useDebug = false;
     bool useExtSW = false;
-    bool newMSGflag = false;
 
-    char ver[14] = "WinSW_v0.57a";
+    char ver[14] = "WinSW_v0.58";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
