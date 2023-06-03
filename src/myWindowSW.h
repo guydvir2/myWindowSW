@@ -40,30 +40,20 @@ class WinSW
 #define RELAY_ON HIGH
 private:
     RockerSW *RockerSW_V[2]{};
+    winPosition win_position;
+    motorProperties m_properties;
 
     uint8_t _id = 0;
     static uint8_t _next_id; /* Instance counter */
     bool _uselockdown = false;
     bool _lockdownState = false;
-    bool _motor_rotating = false;
-
-    // Precentage calc parameters
-    float WIN_UP_DURATION = 90.0;             // set by user for each window (seconds)
-    float WIN_DOWN_DURATION = 90.0;           // set by user for each window (seconds)
-    float _current_postion = 0.0;             // position 0-100
-    float _requested_position = 0.0;          // cmd to position
-    float _last_position = 0.0;               // last saved position
-    float _motor_stall_sec = 0.0;             // time untill motor actually moves (for now same up & down)
-    float _end_movement_extra_time_sec = 0.0; // give extra time to make sure when it come to 0 or 100
-    float _start_position = 0;
-    unsigned long _start_clk = 0;
+    bool _useExtSW = false;
+    bool _virtCMD = false;
 
 public:
-    bool virtCMD = false;
     bool useDebug = false;
-    bool useExtSW = false;
 
-    char ver[14] = "WinSW_v0.58";
+    char ver[14] = "WinSW_v0.58a";
     char name[MAX_TOPIC_SIZE];
     uint8_t outpins[2];
 
@@ -83,7 +73,7 @@ public:
     void set_ext_input(uint8_t upi = UNDEF_INPUT, uint8_t dpin = UNDEF_INPUT);
     void set_output(uint8_t outup_pin = UNDEF_INPUT, uint8_t outdown_pin = UNDEF_INPUT);
 
-    void set_Win_position(float position); /* Set Open Position 0-100*/
+    void set_Win_position(float position, uint8_t i); /* Set Open Position 0-100*/
     void set_motor_properties(float to_to_up = 100, float time_to_down = 100, float stick_time = 0.5, float end_move_time = 0.5);
 
     void set_WINstate(uint8_t state, uint8_t reason); /* External Callback UP/DOWN/OFF */
@@ -103,7 +93,7 @@ private:
     void _winDOWN();
     void _switch_window_state(uint8_t state, uint8_t i);
 
-    void _stop_if_position();
+    void _stop_position_reached();
     void _start_timing_movement();
     void _calc_current_position();
     void _validate_position_value(float &value);

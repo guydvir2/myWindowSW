@@ -7,8 +7,6 @@
 #endif
 
 #define UNDEF_POSITION 211
-#define MAX_OPEN_POSITION 100
-#define MIN_OPEN_POSITION 0
 
 enum state : const uint8_t
 {
@@ -38,6 +36,24 @@ struct Win_props
     bool extSW = false;
     bool lockdown = false;
     bool virtCMD = false;
+};
+struct winPosition
+{
+    bool is_rotating = false;
+    float current_position = 0.0; // now position 0-100
+    float request_position = 0.0; // cmd to position
+    float last_position = 0.0;    // last saved position
+    float init_position = 0;
+    unsigned long start_clk = 0;
+};
+struct motorProperties
+{
+    const uint8_t MAX_OPEN_POSITION = 100;
+    const uint8_t MIN_OPEN_POSITION = 0;
+    float UP_DURATION = 90.0;             // set by user for each window (seconds)
+    float DOWN_DURATION = 90.0;           // set by user for each window (seconds)
+    float STALL_SEC = 0.0;             // time untill motor actually moves (for now same up & down)
+    float EXTRA_TIME_END = 0.0; // give extra time to make sure when it come to 0 or 100
 };
 
 enum REASONS : const uint8_t
