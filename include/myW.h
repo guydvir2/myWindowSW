@@ -50,8 +50,8 @@ struct motorProperties
 {
     const uint8_t MAX_OPEN_POSITION = 100;
     const uint8_t MIN_OPEN_POSITION = 0;
-    float UP_DURATION = 90.0;             // set by user for each window (seconds)
-    float DOWN_DURATION = 90.0;           // set by user for each window (seconds)
+    float UP_DURATION = 60.0;             // set by user for each window (seconds)
+    float DOWN_DURATION = 60.0;           // set by user for each window (seconds)
     float STALL_SEC = 0.0;             // time untill motor actually moves (for now same up & down)
     float EXTRA_TIME_END = 0.0; // give extra time to make sure when it come to 0 or 100
 };

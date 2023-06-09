@@ -237,10 +237,10 @@ void WinSW::_allOff()
   }
   MSG.state = STOP;
   MSG.position = get_Win_position();
-  Serial.print("end_pos: ");
-  Serial.println(win_position.current_position);
-  Serial.print("delta_time: ");
-  Serial.println(millis() - win_position.start_clk);
+  // Serial.print("end_pos: ");
+  // Serial.println(win_position.current_position);
+  // Serial.print("delta_time: ");
+  // Serial.println(millis() - win_position.start_clk);
 }
 void WinSW::_winUP()
 {
@@ -364,18 +364,20 @@ void WinSW::_stop_position_reached()
       {
         delay(m_properties.EXTRA_TIME_END * 1000);
       }
-      Serial.print("Reached requested position: ");
-      Serial.println(win_position.current_position);
+      // Serial.print("Reached requested position: ");
+      // Serial.println(win_position.current_position);
       if (abs(win_position.current_position - win_position.request_position) < 0.5 && abs(win_position.current_position - win_position.request_position) > 0.01)
       {
-        Serial.print("Position err correction: ");
-        Serial.println(abs(win_position.current_position - win_position.request_position));
+        // Serial.print("Position err correction: ");
+        // Serial.println(abs(win_position.current_position - win_position.request_position));
         win_position.current_position = win_position.request_position;
       }
       else
       {
         Serial.println("Position err to big");
       }
+      MSG.reason = 0; // TIMEOUT
+      MSG.newMSG = true;
     }
     win_position.last_position = win_position.current_position;
   }
